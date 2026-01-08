@@ -1,24 +1,48 @@
 module StrainedBandstructures
 
-using ExtendableFEM
-using ExtendableFEMBase
-using ExtendableGrids
-using ExtendableSparse
-using GridVisualize
-using SimplexGridFactory
-using Triangulate
-using TetGen
-using LinearAlgebra
-using LinearSolve
-using Printf
-using DiffResults
-using ForwardDiff
-using Symbolics
-using SparseArrays
-using SparseDiffTools
-using DocStringExtensions
-
-
+using DocStringExtensions: DocStringExtensions, TYPEDEF
+using DrWatson: DrWatson, datadir
+using ExtendableFEM: ExtendableFEM, ItemIntegrator, NonlinearOperator,
+                    assemble!, fixed_dofs, grad, id
+using ExtendableFEMBase: ExtendableFEMBase, CellDofs, FEEvaluator, FEMatrix,
+                        FESpace, FEVector, FEVectorBlock, Gradient, H1P1,
+                        Identity, L2P0, PointEvaluator, QPInfos,
+                        QuadratureRule, continuify, displace_mesh,
+                        displace_mesh!, evaluate!, evaluate_bary!, fill!,
+                        get_ncomponents, get_ndofs, get_polynomialorder,
+                        lazy_interpolate!, nodevalues, nodevalues!,
+                        nodevalues_view, update_basis!
+using ExtendableGrids: ExtendableGrids, BFaceGeometries, BFaceNodes,
+                        BFaceRegions, Cartesian2D, CellFinder, CellGeometries,
+                        CellNodes, CellRegions, CellVolumes, CoordinateSystem,
+                        Coordinates, Edge1D, ElementGeometries, ExtendableGrid,
+                        FaceCells, FaceEdges, FaceGeometries, FaceNodes,
+                        ON_CELLS, PColorPartitions, PartitionCells,
+                        Tetrahedron3D, Triangle2D, UniqueBFaceGeometries,
+                        UniqueCellGeometries, UniqueFaceGeometries,
+                        VectorOfConstants, append!, bfacemask!, cellmask!,
+                        gFindBruteForce!, gFindLocal!, glue, interpolate!,
+                        local_celledgenodes, max_num_targets_per_source,
+                        num_cells, num_partitions, num_pcolors, num_sources,
+                        subgrid, uniform_refine, unique
+using ExtendableSparse: ExtendableSparse, ExtendableSparseMatrix, factorize!,
+                        flush!, rawupdateindex!
+using ForwardDiff: ForwardDiff, DiffResults
+using GridVisualize: GridVisualize, GridVisualizer, gridplot, scalarplot,
+                    scalarplot!
+using LinearAlgebra: LinearAlgebra, /, cross, det, dot, ldiv!, mul!, norm,
+                    transpose
+using LinearSolve: LinearSolve, LinearProblem, init
+using Printf: Printf, @printf
+using SimplexGridFactory: SimplexGridFactory, SimplexGridBuilder, cellregion!,
+                        facet!, facetregion!, maxvolume!, options!, point!,
+                        regionpoint!, simplexgrid
+using SparseArrays: SparseArrays, SparseMatrixCSC, sparse
+using SparseDiffTools: SparseDiffTools, ForwardColorJacCache,
+                        forwarddiff_color_jacobian!, matrix_colors
+using Symbolics: Symbolics
+using TetGen: TetGen
+using Triangulate: Triangulate
 
 ## problem: loading and saving grids leads to ElementGeometries -> DataType conversion (by DrWarson/JLD2?) which has to be reverted
 ## after loading (until this is fixed ina more elegant way)
@@ -58,7 +82,6 @@ export apply_tensor!
 
 include("heterostructures.jl")
 export HeteroStructureData
-export set_data
 
 include("strains.jl")
 export StrainType
@@ -87,9 +110,6 @@ include("statistics.jl")
 export compute_statistics
 
 include("solvers.jl")
-export solve_by_embedding
-export solve_by_embedding!
-export solve_by_damping
 export solve_lowlevel, solve_lowlevel_parallel
 
 include("solvers_from_energy.jl")
