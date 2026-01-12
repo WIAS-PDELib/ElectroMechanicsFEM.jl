@@ -1,4 +1,4 @@
-# StrainedBandstructures.jl
+# ElectroMechanicsFEM.jl
 
 ## Working examples
 
