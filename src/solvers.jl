@@ -1,12 +1,12 @@
 function solve_lowlevel(
     xgrid::ExtendableGrid,                          # grid
-    boundary_operator,                                   # Operator for boundary data (Dirichlet)
+    boundary_operator,                              # Operator for boundary data (Dirichlet)
     displacement_operator,                          # Operator for displacement
     polarisation_operator,                          # Operator for polarisation
     emb_params;                                     # embedding parameters (operators must depend on them!)
-    periodic_boundary_operator = nothing,             # operator for periodic boundary
+    periodic_boundary_operator = [],                # operator for periodic boundary
     FETypes = [H1P1{size(xgrid[Coordinates],1)}],   # FETypes (default: P1)
-    linsolver = ExtendableSparse.MKLPardiso,
+    linsolver = LinearSolve.MKLPardisoFactorize(),  # LinearSolve.PardisoJL(), # alternative linear solver
     nsteps = ones(Int,length(FETypes)),             # number of embedding steps (parameters are scaled by nsteps equidistant steps within 0:1)
     damping = 0,                                    # damping in Newton iteration
     target_residual = 1e-12*ones(Int,length(FETypes)),
@@ -438,7 +438,7 @@ function solve_lowlevel_parallel(
     displacement_operator,                          # Operator for displacement
     polarisation_operator,                          # Operator for polarisation
     emb_params;                                     # embedding parameters (operators must depend on them!)
-    periodic_boundary_operator = nothing,             # operator for periodic boundary
+    periodic_boundary_operator = [],                # operator for periodic boundary
     FETypes = [H1P1{size(xgrid[Coordinates],1)}],   # FETypes (default: P1)
     linsolver = ExtendableSparse.MKLPardiso,
     nsteps = ones(Int,length(FETypes)),             # number of embedding steps (parameters are scaled by nsteps equidistant steps within 0:1)

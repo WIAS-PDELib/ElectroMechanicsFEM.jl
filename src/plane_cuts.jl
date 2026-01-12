@@ -1,5 +1,3 @@
-using DrWatson
-
 # modification from https://github.com/j-fu/GridVisualize.jl/blob/main/src/common.jl
 function tet_x_plane!(ixcoord,ixvalues,iedges,pointlist,node_indices,planeq_values,function_values; tol=0.0)
 
@@ -396,8 +394,8 @@ function perform_simple_plane_cuts(target_folder_cut, Solution_original, plane_p
         @info "ENTERING cut_level = $(cut_level)"
 
         # make cut_level subdirectory
-        mkpath(datadir(target_folder_cut, "z=$(cut_level)/"))
         target_folder_cut_level = target_folder_cut * "z=$(cut_level)/"
+        mkpath(target_folder_cut_level)
 
         ## find faces for this cut_level
         faces4level = findall(abs.(z4Faces .- cut_level) .< eps_gfind)

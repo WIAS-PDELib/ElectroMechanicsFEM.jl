@@ -1,6 +1,6 @@
 module bimetal
 
-using StrainedBandstructures
+using ElectroMechanicsFEM
 using ExtendableFEM
 using ExtendableGrids
 using SimplexGridFactory
@@ -15,7 +15,7 @@ using ExtendableSparse
 ## postprocess data with postprocess(; Plotter = PyPlot) --> images go to plots directory
 
 # configure Watson
-@quickactivate "StrainedBandstructures" # <- project name
+@quickactivate "ElectroMechanicsFEM" # <- project name
 # set parameters that should be included in filename
 watson_accesses = ["scale", "latmis", "femorder", "full_nonlin", "nrefs", "strainm", "mb", "hz", "grid_type", "bc", "mstruct","stressor_x"]
 watson_allowedtypes = (Real, String, Symbol, Array, DataType)
@@ -417,7 +417,7 @@ function export_vtk(d = nothing; upscaling = 0, kwargs...)
     filename_vtk = savename(d, ""; allowedtypes = watson_allowedtypes, accesses = watson_accesses)
     @unpack solution, strainm, estrainm, misfit_strain = d
     repair_grid!(solution[1].FES.xgrid)
-    StrainedBandstructures.exportVTK(datadir(watson_datasubdir, filename_vtk), misfit_strain, solution[1], nothing; EST = estrainm, strain_model = strainm, P0strain = true, upscaling = upscaling)
+    ElectroMechanicsFEM.exportVTK(datadir(watson_datasubdir, filename_vtk), misfit_strain, solution[1], nothing; EST = estrainm, strain_model = strainm, P0strain = true, upscaling = upscaling)
 end
 
 function export_cuts(; 

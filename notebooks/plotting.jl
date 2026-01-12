@@ -12,7 +12,7 @@ begin
     Pkg.activate(joinpath(@__DIR__,".."))
     using Revise
     using PlutoUI
-    using StrainedBandstructures
+    using ElectroMechanicsFEM
     using ExtendableGrids
     using GridVisualize
     using PlutoVista
@@ -108,7 +108,7 @@ let
 end
 
 # ╔═╡ 65de36ff-5043-465f-beef-b2e2e7819ba2
-md" ## Functions from StrainedBandstructures package"
+md" ## Functions from ElectroMechanicsFEM package"
 
 # ╔═╡ 0658ec32-ba72-42ee-b8e5-6b2cd62d88b9
 function asign_nodes(p,builder,shape,d1,d2,δ)

@@ -1,16 +1,9 @@
 module nanowire
 
-using StrainedBandstructures
+using ElectroMechanicsFEM
 using ExtendableFEM
 using ExtendableFEMBase
-using ExtendableGrids
-using ExtendableSparse
 using GridVisualize
-using Printf
-using SimplexGridFactory
-using Triangulate
-using LinearAlgebra
-using TetGen
 using DrWatson
 using DataFrames
 using LinearSolve
@@ -21,7 +14,7 @@ using Pardiso
 ## postprocess data with postprocess(; Plotter = PyPlot) --> images go to plots directory
 
 # configure Watson
-@quickactivate "StrainedBandstructures" # <- project name
+@quickactivate "ElectroMechanicsFEM" # <- project name
 # set parameters that should be included in filename
 watson_accesses = ["geometry", "nrefs", "femorder", "mstruct", "stressor_x", "full_nonlin", "interface_refinement", "cross_section", "rotate"]
 watson_allowedtypes = (Real, String, Symbol, Array, DataType)
@@ -53,7 +46,7 @@ function get_defaults()
         "polarisation" => false,                         # also solve for polarisation
         "fully_coupled" => false,                       # parameter for later when we have the full model
         "postprocess" => false,                         # angle calculation, vtk files, cuts
-        "linsolver" => LinearSolve.MKLPardisoFactorize(),         # linear solver (everything supported by LinearSolve)
+        "linsolver" => LinearSolve.UMFPACKFactorization(), # MACOS linear solver, for other OS use LinearSolve.MKLPardisoFactorize()
         "npartitions" => 1,                             # number of partitions for parallel solve and assembly
         "parallel" => false,                             # number of partitions for parallel solve and assembly
         "damping" => 0,                                 # damping in Newton iteration

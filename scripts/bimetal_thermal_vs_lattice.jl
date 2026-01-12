@@ -1,6 +1,6 @@
 module bimetal
 
-using StrainedBandstructures
+using ElectroMechanicsFEM
 using GradientRobustMultiPhysics
 using ExtendableGrids
 using SimplexGridFactory
