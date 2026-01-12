@@ -12,3 +12,10 @@ end
     @test ExplicitImports.check_no_implicit_imports(ElectroMechanicsFEM, skip=(Base, Core, Printf)) === nothing # @printf macro is falsely detected
     @test ExplicitImports.check_no_stale_explicit_imports(ElectroMechanicsFEM) === nothing
 end
+
+@testset "Nanowire" begin
+    include(joinpath("..", "scripts", "nanowire.jl"))
+    @test Nanowire.test(test_case = 1)
+    @test Nanowire.test(test_case = 2)
+    @test Nanowire.test(test_case = 3)
+end

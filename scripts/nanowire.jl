@@ -1,4 +1,4 @@
-module nanowire
+module Nanowire
 
 using ElectroMechanicsFEM
 using ExtendableFEM
@@ -486,5 +486,25 @@ function postprocess(filename = nothing; watson_datasubdir = watson_datasubdir, 
     return d
 
 end
+
+    function test(; test_case = 1)
+        if test_case == 1
+            d = main(; geometry = [30, 20, 15, 1000], femorder = 1, scenario = 1, cross_section = 1, full_nonlin = true, force = true)
+            testval = 2937.426854838508 # full_nonlin = true
+        elseif test_case == 2
+            d = main(; geometry = [30, 20, 15, 1000], femorder = 1, scenario = 2, cross_section = 2, full_nonlin = false, force = true)
+            testval = 950.7547862781619 # full_nonlin = false
+        elseif test_case == 3
+            d = main(; geometry = [30, 20, 15, 500], femorder = 2, scenario = 3, cross_section = 3, full_nonlin = true, force = true)
+            testval = 7.228934820317298 # femorder = 2
+        end
+
+        result = norm(d["solution"],2)
+        @info "result  = $result"
+        @info "testval = $testval"
+        @info "residual = $(d["residual"])"
+        final_result = (abs(result - testval) < 1.0e-14) && (d["residual"] < 1.0e-12)
+        return final_result
+    end
 
 end
