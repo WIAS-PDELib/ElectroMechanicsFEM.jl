@@ -27,8 +27,6 @@ In addition, cross-section cuts are created and elastic strain and other solutio
 ### Scripts
 
 - `scripts/nanowire.jl`: 3D nanowire simulation (nonlinear elasticity + polarisation + postprocessing)
-- `scripts/bimetal_watson.jl`: runs a set of parametrized bimetal simulations via DrWatson + postprocessing (angle vs. lattice mismatch, 3D bimetal cuts)
-- `scripts/bimetal_thermal_vs_lattice.jl`: 2D or 3D bimetal simulations (nonlinear elasticity + misfit strain from thermal effects (main_thermal) or lattice mismatch (main_lattice))
 
 
 ## Todo
