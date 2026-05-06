@@ -2,7 +2,7 @@ module ElectroMechanicsFEM
 
 using DocStringExtensions: DocStringExtensions, TYPEDEF
 using ExtendableFEM: ExtendableFEM, ItemIntegrator, NonlinearOperator,
-                    assemble!, fixed_dofs, grad, id
+                    assemble!, fixed_dofs, grad, id, evaluate
 using ExtendableFEMBase: ExtendableFEMBase, CellDofs, FEEvaluator, FEMatrix,
                         FESpace, FEVector, FEVectorBlock, Gradient, H1P1,
                         Identity, L2P0, PointEvaluator, QPInfos,

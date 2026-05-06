@@ -526,7 +526,7 @@ function perform_simple_plane_cuts(target_folder_cut, Solution_original, plane_p
         nodevals_ϵu1 = zeros(Float64,6,size(nodevals_gradient1,2))
         nodevals_ϵu2 = zeros(Float64,6,size(nodevals_gradient2,2))
 
-        ## compute nodevalues for polarisatin/electri field on subgrids
+        ## compute nodevalues for polarisation/electric field on subgrids
         if length(Solution) > 1
             nodevals_P1 = nodevalues(Solution[2], Identity; regions = [1,2], nodes = nodes4level[subnodes1])
             nodevals_P2 = nodevalues(Solution[2], Identity; regions = [3], nodes = nodes4level[subnodes2])
@@ -582,6 +582,32 @@ function perform_simple_plane_cuts(target_folder_cut, Solution_original, plane_p
                 end
             end
         end
+
+        ## define P1 functions of the elastic strain on each subgrid
+        @info "computing average elastic strain values on cut grid..."
+        FES_P1_sub1 = FESpace{H1P1{6}}(subgrid1)
+        FES_P1_sub2 = FESpace{H1P1{6}}(subgrid2)
+        ϵu_elast = FEVector([FES_P1_sub1, FES_P1_sub2])
+        view(ϵu_elast[1]) .= nodevals_ϵu1'[:]
+        view(ϵu_elast[2]) .= nodevals_ϵu2'[:]
+
+        ## compute the average of each component of the elastic strain
+        IdIntegrator = ItemIntegrator([id(1)]; piecewise = false)
+        avg1 = evaluate(IdIntegrator, [ϵu_elast[1]]) / sum(subgrid1[CellVolumes])
+        avg2 = evaluate(IdIntegrator, [ϵu_elast[2]]) / sum(subgrid2[CellVolumes])
+        avg = (evaluate(IdIntegrator, [ϵu_elast[1]]) .+ evaluate(IdIntegrator, [ϵu_elast[2]])) / sum(cut_grid[CellVolumes])
+        @info "averages on subgrid1 = $avg1"
+        @info "averages on subgrid2 = $avg2"
+        @info "averages on full cutgrid = $avg"
+
+        @info "Writing averages into file..."
+        filename_eAB = target_folder_cut_level * "elastic_strain_averages.dat"
+        io = open(filename_eAB, "w")
+        @printf(io, "avg_full avg_sub1 avg_sub2\n")
+        for n = 1 : 6
+            @printf(io, "%.6e %.6e %.6e\n", avg[n], avg1[n], avg2[n])
+        end
+        close(io)
 
         ## calculate jumps along interface of core and stressor
         nodes_at_interface = intersect(subnodes1, subnodes2)
@@ -847,14 +873,14 @@ function perform_simple_plane_cuts(target_folder_cut, Solution_original, plane_p
                 for j = 1 : 3
                     x3D[j] = invR[j,1] * x2D[1] + invR[j,2] * x2D[2] + invR[j,3] * z
                 end
-                return nothing
+                return x3D
             end
 
             # mapping from 3D coordinates on simple cut_grid to 2D coordinates on xgrid_uni
             function xtrafo2!(x2D_out,x2D_in)
                 x2D_out[1] = x2D_in[1] + xmin
                 x2D_out[2] = x2D_in[2] + ymin
-                return nothing
+                return x2D_out
             end
 
             #interpolate ϵ0 onto uniform grid
