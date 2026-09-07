@@ -10,7 +10,7 @@ julia> using Pkg
 julia> Pkg.instantiate()
 ```
 
-For example to run the simulation for a GaAs/In0.5Al0.5As nanowire with 50 nm thick core (GaAs) and 10 nm wide shell/stressor (In0.5Al0.5As) type:
+For example, to run the simulation for a GaAs/In0.5Al0.5As nanowire with a 50 nm thick core (GaAs) and a 10 nm wide shell/stressor (In0.5Al0.5As) type:
 
 ```
 julia> using TestEnv; TestEnv.activate(); include("scripts/bimetal.jl")
@@ -18,11 +18,11 @@ julia> using PyPlot
 julia> nanowire.main(geometry=[30,20,10,2000],stressor_x=0.5,Plotter=PyPlot,postprocess=true)
 ```
 
-The code by default uses linear FEM elements without any grid refinement and a ZB-(001) crystal orientation. 
-These settings (and many others) can be tuned by changing the papameters in `scripts/nanowire.jl`.
+By default, the code uses linear FEM elements without grid refinement and a ZB-(001) crystal orientation. 
+These settings (and many others) can be tuned by changing the parameters in `scripts/nanowire.jl`.
 
-The above commands will generate a .jld2 file with the solution data and two .vtu files with the bent and unbent nanowire that can be imported in Paraview for visualizing the solution.
-In addition, cross-section cuts are created and elastic strain and other solution derivatives are computed on cross-sections perpedicular to the bending direction (by default a middle cross-section is chosen).
+The above commands generate a .jld2 file with the solution data and two .vtu files with the bent and unbent nanowire, which can be imported into ParaView to visualize the solution.
+In addition, cross-section cuts are created and elastic strain and other solution derivatives are computed on cross-sections perpendicular to the bending direction (by default, a middle cross-section is chosen).
 
 ### Scripts
 
