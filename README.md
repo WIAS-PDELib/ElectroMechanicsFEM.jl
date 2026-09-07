@@ -13,7 +13,7 @@ julia> Pkg.instantiate()
 For example to run the simulation for a GaAs/In0.5Al0.5As nanowire with 50 nm thick core (GaAs) and 10 nm wide shell/stressor (In0.5Al0.5As) type:
 
 ```
-julia> include("scripts/nanowire.jl")
+julia> using TestEnv; TestEnv.activate(); include("scripts/bimetal.jl")
 julia> using PyPlot
 julia> nanowire.main(geometry=[30,20,10,2000],stressor_x=0.5,Plotter=PyPlot,postprocess=true)
 ```
