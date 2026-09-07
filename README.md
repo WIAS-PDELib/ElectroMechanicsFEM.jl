@@ -27,11 +27,15 @@ In addition, cross-section cuts are created and elastic strain and other solutio
 ### Scripts
 
 - `scripts/nanowire.jl`: 3D nanowire simulation (nonlinear elasticity + polarisation + postprocessing)
+- `notebooks/plotting.jl`: Pluto notebook for visualizing different grids
+- [bimetal] `scripts/bimetal.jl`: 3D bimetal simulation (nonlinear elasticity + postprocessing)
 
 
+<!-- 
 ## Todo
 
-- [Done, 16/03/2022] grid generator for nanowire in Julia (currently user must provide sg-files, one can be found in grids folder)
-- fully coupled elasticity + polarisation model (currently only forward coupling)
-- parallelize simulations in run_watson
-- regression tests
+%- [Done, 16/03/2022] grid generator for nanowire in Julia (currently user must provide sg-files, one can be found in grids folder)
+%- fully coupled elasticity + polarisation model (currently only forward coupling)
+%- parallelize simulations in run_watson
+%- regression tests
+-->
